@@ -32,6 +32,16 @@ jobs:
         id: settime
         run: echo "time=$(date +%s)" >> $GITHUB_OUTPUT
 
+      - name: create build file
+        run: echo "Hello from build job" > build.txt
+
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-file
+          path: build.txt
+
+
 
   test:
     runs-on: ubuntu-latest
@@ -44,6 +54,14 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
+      - name: download artifact
+        uses: action/download-artifact@v4
+        with:
+          name: build-file
+
+      - name: show artifact content
+        run: cat build.txt
 
       - name: Setup Node from Matrix
         uses: actions/setup-node@v4

@@ -1,0 +1,48 @@
+name: service demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  service-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpass
+          POSTGRESS_DB: test_db
+        ports:
+          - 5432:5432
+
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Install Postgres Client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Wait for Postgres
+        run: |
+          for i in {1..10}; do
+            pg_isready -h localhost -p 5432 && break
+            echo "Waiting for postgres..."
+            sleep 3
+          done
+
+      - name: Create Database
+         run: |
+           psql -h localhost -U testuser -d postgres -c "CREATE DATABASE testdb;"
+         env:
+         PGPASSWORD: testpass
+
+      - name: Test DB Connection
+        run: |
+          psql -h localhost -U testuser -d postgres -c "\l"
+        env:
+          PGPASSWORD: testpass

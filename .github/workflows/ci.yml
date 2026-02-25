@@ -63,6 +63,10 @@ jobs:
       - name: show artifact content
         run: cat build.txt
 
+      - name: run only on node 20
+        if: ${{ matrix.node-version == 20 }}
+        run: echo " running special step on node 20 only"
+
       - name: Setup Node from Matrix
         uses: actions/setup-node@v4
         with:

@@ -33,7 +33,7 @@ jobs:
         run: echo "time=$(date +%s)" >> $GITHUB_OUTPUT
 
 
-    test:
+  test:
     runs-on: ubuntu-latest
     needs: build
 

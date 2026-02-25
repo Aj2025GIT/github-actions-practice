@@ -2,12 +2,8 @@ name: Filter demo workflow
 
 on:
   workflow_dispatch:
-  #push:
-  # branches:
-  #   - main:
-    
-  paths:
-      - 'app/**'
+paths:
+  - 'app/**'
 
   workflow_dispatch:
 

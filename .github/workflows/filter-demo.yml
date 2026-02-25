@@ -1,0 +1,20 @@
+name: Filter demo workflow
+
+on:
+  push:
+    branches:
+      - main:
+    paths:
+      - 'app/**'
+
+  workflow_dispatch:
+
+jobs:
+  filter-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: show trigger info
+        run: echo "workflow tiggered because change is made in app folder"
+
+
